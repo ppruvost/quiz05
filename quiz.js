@@ -63,9 +63,16 @@ function goFullScreen() {
 
 function startMusic() {
     const audio = document.getElementById("bgMusic");
-    audio.volume = 0.4; 
-    audio.play().catch(() => {
-        document.addEventListener("click", () => audio.play(), { once: true });
+    
+    // Définir le volume et lancer la musique si le navigateur le permet
+    audio.volume = 0.4;
+    
+    // Enlever le mute (pour permettre l'écoute une fois la page chargée)
+    audio.muted = false;
+    
+    // Essayer de jouer la musique dès que possible
+    audio.play().catch((error) => {
+        console.log("Lecture automatique échouée, mais la musique est prête.");
     });
 }
 
@@ -75,7 +82,15 @@ function stopMusic() {
     audio.currentTime = 0;
 }
 
-// Variables globales
+// Lancer la musique dès que la page est prête (sans interaction de l'utilisateur)
+document.addEventListener("DOMContentLoaded", () => {
+    startMusic();
+});
+
+/* ============================================================
+============== VARIABLE GLOBALES ==============================
+============================================================ */
+
 let user = { nom: "", prenom: "" };
 let current = 0;
 let score = 0;
