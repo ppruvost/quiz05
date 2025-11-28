@@ -24,6 +24,56 @@ function resetQuizSession() {
     // Retour page d’accueil du quiz
     window.location.href = "index.html";
 }
+// =============================
+// SYSTEME ANTI-TRICHE RENFORCÉ
+// =============================
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+        resetQuizSession();
+    }
+});
+
+window.addEventListener("blur", () => {
+    resetQuizSession();
+});
+
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+document.addEventListener("keydown", (e) => {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+        resetQuizSession();
+    }
+});
+
+// Plein écran
+function goFullScreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+}
+
+/* ============================================================
+============== MUSIQUE DE FOND (STYLE KAHOOT) =================
+============================================================ */
+
+function startMusic() {
+    const audio = document.getElementById("bgMusic");
+    audio.volume = 0.4; 
+    audio.play().catch(() => {
+        document.addEventListener("click", () => audio.play(), { once: true });
+    });
+}
+
+function stopMusic() {
+    const audio = document.getElementById("bgMusic");
+    audio.pause();
+    audio.currentTime = 0;
+}
 
 // Variables globales
 let user = { nom: "", prenom: "" };
